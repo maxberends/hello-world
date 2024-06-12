@@ -49,6 +49,18 @@ void setup()
 void loop()
 {
   Input = analogRead(PIN_INPUT);
+
+  double gap = abs(Setpoint-Input); //distance away from setpoint
+  if (gap < 10)
+  {  //we're close to setpoint, use conservative tuning parameters
+    myPID.SetTunings(consKp, consKi, consKd);
+  }
+  else
+  {
+     //we're far from setpoint, use aggressive tuning parameters
+     myPID.SetTunings(aggKp, aggKi, aggKd);
+  }
+  
   myPID.Compute();
 
   /************************************************
